@@ -1,21 +1,20 @@
-package com.example.sweater.domain;
-
-import org.hibernate.validator.constraints.Length;
+package org.mvc.spring.domain;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
+/**
+ * 01.11.2019
+ *
+ * @author Jimy
+ * @project FirstMVCProject
+ */
 @Entity
 public class Message {
-
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "Please fill the message")
-    @Length(max = 2408, message = "Message too long (more than 2kB)")
     private String text;
-    @Length(max = 255, message = "Message too long (more than 255B)")
     private String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -27,10 +26,14 @@ public class Message {
     public Message() {
     }
 
-    public Message(String text, String tag, User author) {
-        this.author = author;
+    public Message(String text, String tag, User user) {
+        this.author = user;
         this.text = text;
         this.tag = tag;
+    }
+
+    public String getAuthorName() {
+        return author != null ? author.getUsername() : "<none>";
     }
 
     public Long getId() {
@@ -57,16 +60,12 @@ public class Message {
         this.tag = tag;
     }
 
-    public String getAuthorName() {
-        return author != null ? author.getUsername() : "<none>";
-    }
-
     public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(User Author) {
-        this.author = Author;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getFilename() {
